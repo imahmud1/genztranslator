@@ -1,64 +1,32 @@
-let database = {
-    "istg": "I swear to God",
-    "fr": "for real",
-    "brb": "be right back",
-    "idk": "I don't know",
-    "ily": "I love you",
-    "imo": "in my opinion",
-    "imho": "in my humble opinion",
-    "tbf": "to be fair",
-    "tbh": "to be honest",
-    "smh": "shaking my head",
-    "rofl": "rolling on the floor laughing",
-    "lol": "laugh out loud",
-    "lmao": "laughing my ass off",
-    "omg": "oh my God/gosh",
-    "oml": "oh my Lord",
-    "ttyl": "talk to you later",
-    "btw": "by the way",
-    "fwiw": "for what it's worth",
-    "fomo": "fear of missing out",
-    "yolo": "you only live once",
-    "ngl": "not gonna lie",
-    "wtf": "what the f***",
-    "stg": "swear to God",
-    "dm": "direct message",
-    "ftw": "for the win",
-    "icymi": "in case you missed it",
-    "rn": "right now",
-    "jk": "just kidding",
-    "jsyk": "just so you know",
-    "qotd": "quote of the day",
-    "ootd": "outfit of the day",
-    "bts": "behind the scenes",
-    "idc": "I don't care",
-    "fyi": "for your information",
-    "bruh": "brother/bro",
-    "afaik": "as far as I know",
-    "afk": "away from keyboard",
-    "bae": "before anyone else",
-    "bff": "best friends forever",
-    "cya": "see you",
-    "g2g": "got to go",
-    "gg": "good game",
-    "hmu": "hit me up",
-    "idek": "I don't even know",
-    "irl": "in real life",
-    "lmk": "let me know",
-    "nvm": "never mind",
-    "onfleek": "extremely good",
-    "pov": "point of view",
-    "sus": "suspicious",
-    "tmi": "too much information",
-    "u": "you",
-    "wbu": "what about you?",
-    "wdym": "what do you mean?",
-    "wym": "what you mean?",
-    "yt": "YouTube",
-    "ykwim": "You Know what i mean",
-    "delulu": "delusional",
-    // ... you can continue adding more as you discover them
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-analytics.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-database.js";
+
+// Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyCsV9lXLJW9y4wQLLZkAFkhjMfFrMKYlbU",
+    authDomain: "genz-langs.firebaseapp.com",
+    databaseURL: "https://genz-langs-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "genz-langs",
+    storageBucket: "genz-langs.appspot.com",
+    messagingSenderId: "389081443408",
+    appId: "1:389081443408:web:6cef894351c26a2b72b555",
+    measurementId: "G-13L39FMY1M"
 };
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
+// Reference to the database
+const db = getDatabase(app);
+const dbRef = ref(db);
+
+// Retrieve data from Firebase
+let database = {};
+onValue(dbRef, (snapshot) => {
+    database = snapshot.val();
+});
 
 function translateText() {
     const userInput = document.getElementById("userInput").value;
@@ -92,3 +60,5 @@ function translateText() {
 
     document.getElementById("translation").innerHTML = output;
 }
+
+document.getElementById('translateButton').addEventListener('click', translateText);

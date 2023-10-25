@@ -31,28 +31,62 @@ onValue(dbRef, (snapshot) => {
 function translateText() {
     const userInput = document.getElementById("userInput").value;
     const words = userInput.split(' ');
+    if (words.length > 20) {
+        document.getElementById("translation").innerHTML = "Please limit your input to 20 words.";
+        return; // exit the function
+    }
     let translatedWords = [];
+    let skipWords = new Set();  // To skip words that are part of multi-word translations
 
     let output = "<strong>Words Found:</strong> ";
 
-    words.forEach(word => {
+    for (let i = 0; i < words.length; i++) {
+        const word = words[i];
+        
+        // If the word is in the skip list, continue
+        if (skipWords.has(word)) {
+            continue;
+        }
+
+        // Check for single-word translation
         if (database[word.toLowerCase()]) {
             output += `<strong>${word}</strong> `;
             if (!translatedWords.includes(word.toLowerCase())) {
                 translatedWords.push(word.toLowerCase());
             }
+        } 
+        // Check for two-word translation (like "No Cap")
+        else if (i < words.length - 1 && database[(word + " " + words[i+1]).toLowerCase()]) {
+            const multiWord = word + " " + words[i+1];
+            output += `<strong>${multiWord}</strong> `;
+            if (!translatedWords.includes(multiWord.toLowerCase())) {
+                translatedWords.push(multiWord.toLowerCase());
+            }
+            skipWords.add(words[i+1]);  // Add the next word to skip list
         } else {
             output += word + " ";
         }
-    });
+    }
 
     output += "<br><br><strong>Meaning:</strong><br>";
     translatedWords.forEach(transWord => {
         output += `• <strong>${transWord}</strong>: ${database[transWord]}<br>`;
     });
 
+    // Construct the translated text
     output += "<br><strong>Translated Text:</strong><br>";
-    output += words.map(word => database[word.toLowerCase()] || word).join(' ') + "<br>";
+    for (let i = 0; i < words.length; i++) {
+        const word = words[i];
+        if (skipWords.has(word)) {
+            continue;
+        } else if (i < words.length - 1 && database[(word + " " + words[i+1]).toLowerCase()]) {
+            output += database[(word + " " + words[i+1]).toLowerCase()] + " ";
+            skipWords.add(words[i+1]);
+        } else {
+            output += database[word.toLowerCase()] || word;
+            output += " ";
+        }
+    }
 
     if (!translatedWords.length) {
         output = "All good, nothing to translate here.";
@@ -60,5 +94,6 @@ function translateText() {
 
     document.getElementById("translation").innerHTML = output;
 }
+
 
 document.getElementById('translateButton').addEventListener('click', translateText);

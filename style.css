@@ -1,13 +1,32 @@
 body {
     font-family: Arial, sans-serif;
-    padding: 50px;
+    padding: 50px 15px; /* Adjusted padding for mobile */
     background-color: #f9f9f9;
     color: #333;
+    max-width: 800px; /* Max width for wider screens */
+    margin: 0 auto; /* Centering the body content */
 }
 
 h1 {
     font-size: 2em;
     margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+h1 i.fab {
+    font-size: 1.5em;
+    margin-left: 10px;
+    color: #000000;
+}
+
+.instructions {
+    background-color: #FFF3CD;
+    border: 1px solid #FFECB5;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 4px;
 }
 
 textarea {
@@ -44,4 +63,17 @@ p {
     border: 1px solid #ccc;
     border-radius: 4px;
     line-height: 1.5;
+}
+
+/* Responsive styles for smaller devices */
+@media only screen and (max-width: 600px) {
+    body {
+        padding: 15px;
+    }
+    h1 {
+        font-size: 1.5em;
+    }
+    h1 i.fab {
+        font-size: 1.2em;
+    }
 }

@@ -1,10 +1,10 @@
 body {
     font-family: Arial, sans-serif;
-    padding: 50px 15px; /* Adjusted padding for mobile */
+    padding: 50px 15px;
     background-color: #f9f9f9;
     color: #333;
-    max-width: 800px; /* Max width for wider screens */
-    margin: 0 auto; /* Centering the body content */
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 h1 {
